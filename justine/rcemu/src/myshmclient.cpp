@@ -118,7 +118,7 @@ std::vector<justine::sampleclient::MyShmClient::Cop> justine::sampleclient::MySh
   while ( std::sscanf ( data+nn, "<OK %d %d/%d %c>%n", &idd, &f, &t, &c, &n ) == 4 )
     {
       nn += n;
-      cops.push_back ( idd );
+      cops.push_back ( Cop{idd} ); //cops.push_back ( idd );
     }
 
   std::cout.write ( data, length );
@@ -297,6 +297,7 @@ void justine::sampleclient::MyShmClient::start ( boost::asio::io_service& io_ser
 
       if ( gngstrs.size() > 0 )
         g = gngstrs[0].to;
+        
       else
         g = 0;
       if ( g > 0 )
@@ -339,15 +340,15 @@ void justine::sampleclient::MyShmClient::start10 ( boost::asio::io_service& io_s
 
   std::vector<Gangster> gngstrs;
 
-  for ( ;; )
+  for ( ;; )// smartcar cop
     {
       std::this_thread::sleep_for ( std::chrono::milliseconds ( 200 ) );
 
       for ( auto cop:cops )
         {
-          car ( socket, cop, &f, &t, &s );
+          car ( socket, cop.id, &f, &t, &s );
 
-          gngstrs = gangsters ( socket, cop, t );
+          gngstrs = gangsters ( socket, cop.id, t );
 
           if ( gngstrs.size() > 0 )
             g = gngstrs[0].to;
@@ -365,9 +366,9 @@ void justine::sampleclient::MyShmClient::start10 ( boost::asio::io_service& io_s
                   std::copy ( path.begin(), path.end(),
                               std::ostream_iterator<osmium::unsigned_object_id_type> ( std::cout, " -> " ) );
 
-                  route ( socket, cop, path );
+                  route ( socket, cop.id, path );
                 }
             }
         }
     }
-}
+

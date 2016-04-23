@@ -519,7 +519,7 @@ private:
   };
 
   typedef SmartCar Gangster;
-  typedef int Cop;
+  typedef SmartCar Cop; // Átírni smartcar-ra 
 
   std::vector<Gangster> gangsters ( boost::asio::ip::tcp::socket & socket, int id, osmium::unsigned_object_id_type cop );
   std::vector<Cop> initcops ( boost::asio::ip::tcp::socket & socket );
@@ -532,5 +532,3 @@ private:
 } // justine::sampleclient::
 
 #endif // ROBOCAR_SHMCLIENT_HPP
-
-
